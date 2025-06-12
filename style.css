@@ -1,0 +1,71 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    overflow: hidden; 
+}
+
+@keyframes wag {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.animate-wag {
+    transform-origin: bottom center;
+    animation: wag 0.5s infinite alternate;
+}
+
+
+.main-app-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.main-app-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+#level-up-speech-bubble {
+    position: absolute;
+    top: 50%; 
+    right: 0; 
+    transform: translateY(-50%) translateX(50%); 
+    background-color: #FACC15; 
+    color: #6B21A8; 
+    font-size: 0.875rem; 
+    font-weight: 700;
+    padding: 0.25rem 0.75rem; 
+    border-radius: 9999px; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+    white-space: nowrap; 
+    opacity: 0; 
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; 
+    z-index: 10; 
+}
+
+#level-up-speech-bubble.hidden {
+    opacity: 0;
+    pointer-events: none; 
+}
+
+
+#level-up-speech-bubble:not(.hidden) {
+    opacity: 1;
+    transform: translateY(-50%) translateX(50%) scale(1); 
+}
+
+
+@keyframes pop-in {
+    0% { transform: translateY(-50%) translateX(50%) scale(0.8); opacity: 0; }
+    80% { transform: translateY(-50%) translateX(50%) scale(1.05); opacity: 1; }
+    100% { transform: translateY(-50%) translateX(50%) scale(1); opacity: 1; }
+}
+
+#level-up-speech-bubble:not(.hidden) {
+    animation: pop-in 0.3s forwards;
+}
