@@ -33,51 +33,51 @@
 
 initial-loading-spinner (초기 로딩 스피너): 앱이 처음 로드되거나 데이터를 불러올 때 사용자에게 로딩 중임을 시각적으로 알려줍니다.
 
-입력: 없음
+>입력: 없음
 
-출력: 화면 중앙에 로딩 스피너와 "데이터를 불러오는 중..." 메시지 표시.
+>출력: 화면 중앙에 로딩 스피너와 "데이터를 불러오는 중..." 메시지 표시.
 
-상태: isLoading 변수에 따라 표시되거나 숨겨집니다.
+>상태: isLoading 변수에 따라 표시되거나 숨겨집니다.
 
 auth-section (로그인/회원가입 섹션): 사용자가 앱에 로그인하거나 새로운 계정을 생성할 수 있도록 합니다.
 
-입력: 사용자의 이메일(email-input), 비밀번호(password-input).
+>입력: 사용자의 이메일(email-input), 비밀번호(password-input).
 
-출력: 로그인/회원가입 폼, 오류 메시지(auth-error-message).
+>출력: 로그인/회원가입 폼, 오류 메시지(auth-error-message).
 
-상태: appState가 'login_register'일 때 표시됩니다.
+>상태: appState가 'login_register'일 때 표시됩니다.
 
 cat-naming-section (냥이 이름 짓기 섹션): 새로 가입한 사용자 또는 냥이 이름이 없는 사용자가 냥이의 이름을 설정할 수 있도록 합니다.
 
-입력: 냥이 이름(cat-name-input).
+>입력: 냥이 이름(cat-name-input).
 
-출력: 이름 입력 필드, 오류 메시지(naming-error-message).
+>출력: 이름 입력 필드, 오류 메시지(naming-error-message).
 
-상태: appState가 'cat_naming'일 때 표시됩니다.
+>상태: appState가 'cat_naming'일 때 표시됩니다.
 
 main-app-content (메인 앱 콘텐츠): 로그인 후 앱의 핵심 기능을 제공하는 주 화면입니다. 냥이 정보 섹션과 단어 테스트 섹션으로 나뉩니다.
 
 cat-section (냥이 정보 섹션): 냥이의 이름, 레벨, 행복도 등을 표시합니다. 레벨업 시에는 말풍선이 나타납니다.
 
-입력: 없음 (냥이 데이터는 내부적으로 관리)
+>입력: 없음 (냥이 데이터는 내부적으로 관리)
 
-출력: 냥이 이미지(cat-image), 냥이 이름 및 레벨(cat-name-level), 행복도 바(happiness-bar) 및 텍스트(happiness-text), 레벨업 시 "Level up!" 말풍선(level-up-speech-bubble).
+>출력: 냥이 이미지(cat-image), 냥이 이름 및 레벨(cat-name-level), 행복도 바(happiness-bar) 및 텍스트(happiness-text), 레벨업 시 "Level up!" 말풍선(level-up-speech-bubble).
 
 test-section (단어 테스트 섹션): 사용자에게 단어 테스트를 제공하고, 답변에 대한 피드백을 보여줍니다.
 
-입력: 옵션 버튼 클릭 (사용자의 답변).
+>입력: 옵션 버튼 클릭 (사용자의 답변).
 
-출력: 테스트 진행 상황(test-progress), 질문 프롬프트(question-prompt), 표시 단어(display-question), 여러 개의 선택지 버튼(options-area), 정오답 피드백 메시지(feedback-message), 정답 표시(correct-answer-display), 다음 버튼(next-button), 현재 상태 메시지(status-message).
+>출력: 테스트 진행 상황(test-progress), 질문 프롬프트(question-prompt), 표시 단어(display-question), 여러 개의 선택지 버튼(options-area), 정오답 피드백 메시지(feedback-message), 정답 표시(correct-answer-display), 다음 버튼(next-button), 현재 상태 메시지(status-message).
 
-상태: appState가 'initial' 또는 'review'일 때 질문/옵션 영역이 표시됩니다. feedback 변수에 따라 피드백 영역이 표시됩니다. appState가 'session_ended' 등일 때는 상태 메시지 영역이 표시됩니다.
+>상태: appState가 'initial' 또는 'review'일 때 질문/옵션 영역이 표시됩니다. feedback 변수에 따라 피드백 영역이 표시됩니다. appState가 'session_ended' 등일 때는 상태 메시지 영역이 표시됩니다.
 
 modal-backdrop (모달 구조): 테스트 완료, 다음 테스트 진행 여부, 오답노트 학습 시작 안내 등 중요한 알림을 사용자에게 모달 팝업 형태로 보여줍니다.
 
-입력: 모달 내의 버튼 클릭 (예/아니오, 확인, 닫기).
+>입력: 모달 내의 버튼 클릭 (예/아니오, 확인, 닫기).
 
-출력: 모달 제목(modal-title), 메시지(modal-message), 주 작업 버튼(modal-primary-action), 닫기 버튼(modal-close).
+>출력: 모달 제목(modal-title), 메시지(modal-message), 주 작업 버튼(modal-primary-action), 닫기 버튼(modal-close).
 
-상태: appState가 'round_completed_success', 'ask_to_continue', 'show_daily_words', 'initial_test_completed_with_errors'일 때 표시됩니다.
+>상태: appState가 'round_completed_success', 'ask_to_continue', 'show_daily_words', 'initial_test_completed_with_errors'일 때 표시됩니다.
 
 
 **2. CSS (시각적 스타일)**
@@ -123,107 +123,108 @@ initializeFirebaseAndAuth(): Firebase 앱을 초기화하고 Firestore 및 Auth 
 
 onAuthStateChanged(auth, async (user) => { ... }) 리스너를 설정하여 사용자의 로그인 상태 변화를 실시간으로 감지합니다.
 
-입력: Firebase 인증 상태 변화 (로그인/로그아웃/초기 로딩).
+>입력: Firebase 인증 상태 변화 (로그인/로그아웃/초기 로딩).
 
-출력: userId 및 userEmail 업데이트, isAuthReady 상태 설정, appState 전환 (로그인 필요 시 login_register, 로그인 완료 시 loadUserData 호출).
+>출력: userId 및 userEmail 업데이트, isAuthReady 상태 설정, appState 전환 (로그인 필요 시 login_register, 로그인 완료 시 loadUserData 호출).
 
 handleRegister():
 
-입력: 이메일, 비밀번호 (HTML <input> 필드에서 가져옴).
+>입력: 이메일, 비밀번호 (HTML <input> 필드에서 가져옴).
 
-처리: createUserWithEmailAndPassword를 사용하여 새 계정을 생성합니다.
+>처리: createUserWithEmailAndPassword를 사용하여 새 계정을 생성합니다.
 
-출력: 성공 시 onAuthStateChanged가 트리거되어 앱 상태가 변경됩니다. 실패 시 authErrorMessage에 오류 메시지를 표시합니다.
+>출력: 성공 시 onAuthStateChanged가 트리거되어 앱 상태가 변경됩니다. 실패 시 authErrorMessage에 오류 메시지를 표시합니다.
 
 handleLogin():
 
-입력: 이메일, 비밀번호.
+>입력: 이메일, 비밀번호.
 
-처리: signInWithEmailAndPassword를 사용하여 로그인합니다.
+>처리: signInWithEmailAndPassword를 사용하여 로그인합니다.
 
-출력: onAuthStateChanged가 트리거됩니다. 실패 시 authErrorMessage에 오류 메시지를 표시합니다.
+>출력: onAuthStateChanged가 트리거됩니다. 실패 시 authErrorMessage에 오류 메시지를 표시합니다.
 
 handleLogout():
 
-입력: 없음 (로그아웃 버튼 클릭).
+>입력: 없음 (로그아웃 버튼 클릭).
 
-처리: signOut(auth)를 호출하여 현재 사용자를 로그아웃합니다.
+>처리: signOut(auth)를 호출하여 현재 사용자를 로그아웃합니다.
 
-출력: onAuthStateChanged가 트리거되어 앱 상태가 login_register로 전환됩니다.
+>출력: onAuthStateChanged가 트리거되어 앱 상태가 login_register로 전환됩니다.
 
 3.3. 냥이 데이터 관리
+
 loadUserData():
 
-입력: Firebase 인증이 완료된 사용자 ID.
+>입력: Firebase 인증이 완료된 사용자 ID.
 
-처리: Firestore에서 현재 사용자의 냥이 데이터를 실시간으로 감지(onSnapshot)하고 catData 변수를 업데이트합니다.
+>처리: Firestore에서 현재 사용자의 냥이 데이터를 실시간으로 감지(onSnapshot)하고 catData 변수를 업데이트합니다.
 
-출력: catData 변수 업데이트, catData.name이 null이면 cat_naming 상태로 전환, 오늘 테스트를 이미 했다면 session_ended 상태로 전환, 아니면 initial 상태로 전환하며 새 테스트를 시작합니다.
+>출력: catData 변수 업데이트, catData.name이 null이면 cat_naming 상태로 전환, 오늘 테스트를 이미 했다면 session_ended 상태로 전환, 아니면 initial 상태로 전환하며 새 테스트를 시작합니다.
 
 handleSaveCatName():
 
-입력: 냥이 이름 (HTML <input> 필드에서 가져옴).
+>입력: 냥이 이름 (HTML <input> 필드에서 가져옴).
 
-처리: catData.name을 업데이트하고 updateCatDataInFirestore()를 호출하여 Firestore에 저장합니다.
+>처리: catData.name을 업데이트하고 updateCatDataInFirestore()를 호출하여 Firestore에 저장합니다.
 
-출력: Firestore 데이터 업데이트.
+>출력: Firestore 데이터 업데이트.
 
 updateCatDataInFirestore():
 
-입력: 현재 catData 상태.
+>입력: 현재 catData 상태.
 
-처리: setDoc 함수를 사용하여 catData를 Firestore에 저장(병합)합니다.
+>처리: setDoc 함수를 사용하여 catData를 Firestore에 저장(병합)합니다.
 
-출력: Firestore에 냥이 데이터 저장.
+>출력: Firestore에 냥이 데이터 저장.
 
 updateCatHappiness(allCorrect):
 
-입력: allCorrect (이번 테스트를 모두 맞혔는지 여부 - true/false).
+>입력: allCorrect (이번 테스트를 모두 맞혔는지 여부 - true/false).
 
-처리: allCorrect 값에 따라 냥이의 happiness를 증가시키거나 감소시키고, 일정 행복도 이상이 되면 level을 증가시킵니다. 레벨업 시 showLevelUpSpeechBubble을 true로 설정하고 2초 후 다시 false로 설정하는 setTimeout을 실행합니다.
+>처리: allCorrect 값에 따라 냥이의 happiness를 증가시키거나 감소시키고, 일정 행복도 이상이 되면 level을 증가시킵니다. 레벨업 시 showLevelUpSpeechBubble을 true로 설정하고 2초 후 다시 false로 설정하는 setTimeout을 실행합니다.
 
-출력: catData 변수 업데이트, levelUpSpeechBubble 표시/숨김, updateCatDataInFirestore() 호출.
+>출력: catData 변수 업데이트, levelUpSpeechBubble 표시/숨김, updateCatDataInFirestore() 호출.
 
 updateLastTestDate():
 
-입력: 없음.
+>입력: 없음.
 
-처리: 현재 날짜를 catData.lastTestDate에 저장하고 Firestore에 업데이트하여 일일 테스트 제한을 구현합니다.
+>처리: 현재 날짜를 catData.lastTestDate에 저장하고 Firestore에 업데이트하여 일일 테스트 제한을 구현합니다.
 
-출력: Firestore에 lastTestDate 업데이트.
+>출력: Firestore에 lastTestDate 업데이트.
 
 3.4. 단어 테스트 로직
 startNewTest():
 
-입력: 없음 (테스트 시작 버튼 클릭 또는 자동 시작).
+>입력: 없음 (테스트 시작 버튼 클릭 또는 자동 시작).
 
-처리: canTakeTest를 확인하고, 테스트에 필요한 변수들(currentQuestionIndex, initialTestCorrectCount, incorrectWordsForReview, resultMessage, feedback)을 초기화합니다. initialWords에서 무작위로 TEST_WORD_COUNT만큼의 단어를 dailyWords로 선택합니다.
+>처리: canTakeTest를 확인하고, 테스트에 필요한 변수들(currentQuestionIndex, initialTestCorrectCount, incorrectWordsForReview, resultMessage, feedback)을 초기화합니다. initialWords에서 무작위로 TEST_WORD_COUNT만큼의 단어를 dailyWords로 선택합니다.
 
-출력: dailyWords 배열 생성, setupQuestion 호출, appState를 'initial'로 설정.
+>출력: dailyWords 배열 생성, setupQuestion 호출, appState를 'initial'로 설정.
 
 setupQuestion(word):
 
-입력: 현재 테스트할 단어 객체.
+>입력: 현재 테스트할 단어 객체.
 
-처리: 영어-한국어 또는 한국어-영어로 무작위로 테스트 유형을 결정하고, 올바른 답과 3개의 오답을 포함하는 options 배열을 생성합니다.
+>처리: 영어-한국어 또는 한국어-영어로 무작위로 테스트 유형을 결정하고, 올바른 답과 3개의 오답을 포함하는 options 배열을 생성합니다.
 
-출력: testType, options 배열 업데이트 (UI 렌더링에 사용될 데이터 준비).
+>출력: testType, options 배열 업데이트 (UI 렌더링에 사용될 데이터 준비).
 
 handleAnswer(selectedOption):
 
-입력: 사용자가 클릭한 선택지(selectedOption).
+>입력: 사용자가 클릭한 선택지(selectedOption).
 
-처리: selectedOption과 현재 단어의 정답을 비교하여 정오답 여부를 판단합니다. 정답이면 initialTestCorrectCount를 증가시키거나 오답노트에서 해당 단어를 제거합니다. 오답이면 incorrectWordsForReview에 단어를 추가합니다.
+>처리: selectedOption과 현재 단어의 정답을 비교하여 정오답 여부를 판단합니다. 정답이면 initialTestCorrectCount를 증가시키거나 오답노트에서 해당 단어를 제거합니다. 오답이면 incorrectWordsForReview에 단어를 추가합니다.
 
-출력: feedback 객체 업데이트 (정답/오답 메시지 및 정답 표시). renderApp() 호출.
+>출력: feedback 객체 업데이트 (정답/오답 메시지 및 정답 표시). renderApp() 호출.
 
 proceedToNextQuestionOrPhase():
 
-입력: 없음 (다음 버튼 클릭).
+>입력: 없음 (다음 버튼 클릭).
 
-처리: feedback을 초기화하고, currentQuestionIndex를 증가시켜 다음 질문으로 넘어갑니다. 모든 질문을 다 풀었다면, 오답이 없으면 round_completed_success 상태로 전환하고 updateCatHappiness 및 updateLastTestDate를 호출합니다. 오답이 있다면 initial_test_completed_with_errors 상태로 전환하여 오답노트 학습을 안내합니다.
+>처리: feedback을 초기화하고, currentQuestionIndex를 증가시켜 다음 질문으로 넘어갑니다. 모든 질문을 다 풀었다면, 오답이 없으면 round_completed_success 상태로 전환하고 updateCatHappiness 및 updateLastTestDate를 호출합니다. 오답이 있다면 initial_test_completed_with_errors 상태로 전환하여 오답노트 학습을 안내합니다.
 
-출력: 다음 질문 설정 또는 앱 상태 전환 (모달 표시, 세션 종료 등).
+>출력: 다음 질문 설정 또는 앱 상태 전환 (모달 표시, 세션 종료 등).
 
 3.5. 렌더링 로직
 
@@ -231,9 +232,9 @@ renderApp() (메인 렌더링 함수): 앱의 핵심 렌더링 로직으로, isL
 
 renderCatSection(), renderTestSection(), renderModal()을 호출하여 해당 UI를 업데이트합니다.
 
-입력: isLoading, appState 및 기타 전역 상태 변수의 변화.
+>입력: isLoading, appState 및 기타 전역 상태 변수의 변화.
 
-출력: HTML 요소들의 hidden 클래스 토글, userEmailDisplay 업데이트, renderCatSection, renderTestSection, renderModal 호출을 통한 세부 UI 업데이트.
+>출력: HTML 요소들의 hidden 클래스 토글, userEmailDisplay 업데이트, renderCatSection, renderTestSection, renderModal 호출을 통한 세부 UI 업데이트.
 
 renderCatSection(): catData의 현재 값(이름, 레벨, 행복도)을 기반으로 냥이 정보 UI를 업데이트합니다. showLevelUpSpeechBubble 값에 따라 말풍선을 표시하거나 숨깁니다.
 
@@ -241,4 +242,4 @@ renderTestSection(): appState에 따라 질문 영역, 피드백 영역, 상태 
 
 renderModal(): appState가 특정 모달 관련 상태일 때 모달을 표시하고, resultMessage 및 현재 앱 상태에 맞는 제목과 메시지를 모달에 채워 넣습니다. 각 모달 버튼에 적절한 onclick 이벤트를 할당하여 상태 전환을 처리합니다.
 
-### 이러한 단계들을 통해 앱은 사용자 인증부터 단어 학습, 냥이 육성까지의 전체적인 흐름을 유기적으로 제공합니다. 각 기능은 데이터 상태에 따라 동적으로 UI를 업데이트하며 상호작용합니다.
+이러한 단계들을 통해 앱은 사용자 인증부터 단어 학습, 냥이 육성까지의 전체적인 흐름을 유기적으로 제공합니다. 각 기능은 데이터 상태에 따라 동적으로 UI를 업데이트하며 상호작용합니다.
