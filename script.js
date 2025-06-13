@@ -10,6 +10,7 @@ import {
 import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // initialWords는 이제 words.js에서 전역적으로 제공
+// 실제 나의 Firebase 콘솔의 Firebase 구성
 const firebaseConfig = {
   apiKey: "AIzaSyB4ppRGai7vrfE_gerw55PqGdzQcO7DSQc",
   authDomain: "my-vocat-app.firebaseapp.com",
@@ -25,11 +26,14 @@ let auth;
 let userId = null;
 let userEmail = null; // 사용자 이메일 저장
 let isAuthReady = false; 
-let catData = { level: 1, happiness: 50, name: null, testRoundNumber: 0 }; 
+// catData에서 lastTestDate 속성을 제거했습니다.
+// testRoundNumber를 catData에 추가하여 Firestore에 저장 및 로드되도록 합니다.
+// testRoundNumber를 1로 초기화하여 항상 첫 테스트는 1부터 시작하도록 함
+// masteredWords 배열을 추가하여 학습한 모든 단어를 영구적으로 저장합니다.
+let catData = { level: 1, happiness: 50, name: null, testRoundNumber: 1, masteredWords: [] }; 
 let currentQuestionIndex = 0;
 let dailyWords = []; 
 let incorrectWordsForReview = []; 
-let sessionWords = []; 
 let testType = 'englishToKorean'; 
 let options = [];
 let initialTestCorrectCount = 0; 
@@ -38,6 +42,7 @@ let initialTestCorrectCount = 0;
 let appState = 'loading'; 
 let resultMessage = ''; 
 let isLoading = true; 
+// canTakeTest는 더 이상 날짜에 의해 제한되지 않습니다.
 let canTakeTest = true; 
 let feedback = null; 
 const TEST_WORD_COUNT = 10;
@@ -238,6 +243,7 @@ function renderTestSection() {
                 if (optionsArea) optionsArea.innerHTML = '';
                 options.forEach((option) => {
                     const button = document.createElement('button');
+                    // 이전 클래스로 되돌림 (고정 높이 및 너비 제거)
                     button.className = "bg-white text-purple-700 font-semibold py-4 px-6 rounded-lg shadow-md hover:bg-purple-100 transition duration-300 ease-in-out transform hover:scale-105 border-2 border-purple-300 text-lg text-left";
                     button.textContent = option;
                     button.onclick = () => handleAnswer(option);
@@ -266,6 +272,7 @@ function renderTestSection() {
         if (statusMessageArea) statusMessageArea.classList.remove('hidden');
         if (statusMessage) statusMessage.textContent = "데이터를 불러오는 중...";
     } else if (appState === 'landing_page' || appState === 'login_register' || appState === 'cat_naming') {
+        // 표지/인증/이름 지정 섹션에서는 테스트 진행 상황을 표시하지 않음
         if (testProgress) testProgress.textContent = ""; 
     }
 }
@@ -326,10 +333,11 @@ function renderModal() {
             modalTitle.textContent = "오늘의 단어 복습";
             if (modalMessage) {
                 let wordListHtml = '<div class="text-left max-h-60 overflow-y-auto px-2 py-1">';
-                if (sessionWords.length === 0) {
-                    wordListHtml += '<p>오늘 학습한 단어가 없습니다.</p>';
+                if (catData.masteredWords.length === 0) { // 수정: catData.masteredWords 사용
+                    wordListHtml += '<p>아직 학습한 단어가 없습니다.</p>';
                 } else {
-                    sessionWords.forEach((word) => {
+                    // masteredWords에서 단어를 가져와 표시
+                    catData.masteredWords.forEach((word) => {
                         wordListHtml += `<p class="mb-2 p-2 border-b border-gray-200 last:border-b-0"><strong>${word.english}</strong>: ${word.korean} (${word.koreanMeaning || '의미 없음'})</p>`;
                     });
                 }
@@ -376,6 +384,8 @@ function renderModal() {
 function renderApp() {
     console.log("renderApp 호출됨. 현재 appState:", appState, "isLoading:", isLoading); 
 
+    // 모든 주요 섹션을 숨깁니다.
+    // 이 부분은 각 조건문에서 필요한 섹션만 다시 표시하기 전에 항상 실행됩니다.
     if (initialLoadingSpinner) initialLoadingSpinner.classList.add('hidden');
     if (landingPageSection) landingPageSection.classList.add('hidden');
     if (authSection) authSection.classList.add('hidden');
@@ -530,13 +540,15 @@ function loadUserData() {
             loadedCatData.level = loadedCatData.level || 1;
             loadedCatData.happiness = loadedCatData.happiness !== undefined ? loadedCatData.happiness : 50;
             loadedCatData.name = loadedCatData.name || null; 
-            // testRoundNumber를 로드합니다. 없으면 0으로 초기화.
-            loadedCatData.testRoundNumber = loadedCatData.testRoundNumber || 0; 
+            // testRoundNumber가 0이면 1로 설정, 그렇지 않으면 로드된 값을 사용 (null/undefined도 1로)
+            loadedCatData.testRoundNumber = loadedCatData.testRoundNumber === 0 ? 1 : (loadedCatData.testRoundNumber || 1);
+            // masteredWords 로드, 없으면 빈 배열로 초기화
+            loadedCatData.masteredWords = loadedCatData.masteredWords || []; 
             console.log("Firestore에서 냥이 데이터 로드됨:", loadedCatData); 
         } else {
-            // 냥이 데이터가 없으면 기본값으로 초기화
-            loadedCatData = { level: 1, happiness: 50, name: null, testRoundNumber: 0 }; 
-            console.log("Firestore에 냥이 데이터 없음, 냥이 이름 지정 필요."); 
+            // 냥이 데이터가 없으면 testRoundNumber를 1로 기본값 설정, masteredWords도 빈 배열로
+            loadedCatData = { level: 1, happiness: 50, name: null, testRoundNumber: 1, masteredWords: [] }; 
+            console.log("Firestore에 냥이 데이터 없음, 사용자 이름 지정 필요."); 
         }
 
         // 데이터가 가져와졌거나 리스너가 설정되었으므로 isLoading을 false로 설정
@@ -551,14 +563,9 @@ function loadUserData() {
             if (catData.name === null) {
                 appState = 'cat_naming'; // 냥이 이름이 없으면 이름 지정 섹션으로 이동
             } else {
-                // 냥이 이름이 지정된 경우, 'session_ended'로 기본값 설정 (시작 또는 계속 준비 완료)
-                // 이름 지정된 냥이의 testRoundNumber가 0이면, 이 사용자가 처음 플레이하는 것임.
-                // 1로 설정하면 '다음 단계 도전' 버튼이 시작을 유도함.
-                if (catData.testRoundNumber === 0) {
-                     catData.testRoundNumber = 1;
-                     updateCatDataInFirestore(); // 이 변경 사항 저장, onSnapshot을 다시 트리거함.
-                }
-                appState = 'session_ended'; // 세션 종료로 기본값 설정, 복습 또는 새 테스트 허용
+                // 이미 로그인되었고 냥이 이름도 있다면 바로 테스트 시작 상태로 이동
+                appState = 'initial'; // 단어 테스트로 바로 진입
+                startNewTest(); // 새 테스트 시작
             }
         }
         
@@ -587,14 +594,11 @@ async function handleSaveCatName() {
     }
     namingErrorMessage.textContent = ''; 
     catData.name = name;
-    // 냥이 이름이 처음 지정될 때, testRoundNumber를 명시적으로 1로 설정 (초기 로드에서 0인 경우)
-    if (catData.testRoundNumber === 0) { 
-        catData.testRoundNumber = 1; 
-    }
+    // testRoundNumber는 이미 1로 초기화되어 있으므로 여기서 변경할 필요 없음
     console.log("냥이 이름 저장 중:", name); 
     await updateCatDataInFirestore();
-    appState = 'initial'; // 초기 테스트 상태로 전환
-    startNewTest(); // 이름 지정 후 첫 테스트 시작
+    appState = 'initial'; // 이름 지정 후 바로 테스트 상태로 전환
+    startNewTest(); // 새 테스트 시작
 }
 
 // Firestore에서 냥이의 행복도와 레벨을 업데이트
@@ -646,7 +650,7 @@ function updateCatHappiness(allCorrect) {
 
 // 새 테스트 라운드를 초기화하고 시작합니다.
 function startNewTest() {
-    console.log("새 테스트 시작 시도 중."); 
+    console.log("새 테스트 시작 시도 중. 현재 테스트 라운드:", catData.testRoundNumber); 
     if (catData.name === null) { 
         appState = 'cat_naming';
         resultMessage = "냥이의 이름을 먼저 지어주세요!";
@@ -657,24 +661,26 @@ function startNewTest() {
     currentQuestionIndex = 0;
     initialTestCorrectCount = 0;
     incorrectWordsForReview = [];
-    sessionWords = []; // 새 테스트 라운드를 위해 학습한 단어 초기화
     resultMessage = '';
     appState = 'initial'; // 테스트를 위해 appState를 초기 상태로 설정
     feedback = null;
     showLevelUpSpeechBubble = false; 
     if (levelUpSpeechBubbleTimeout) clearTimeout(levelUpSpeechBubbleTimeout); 
 
-    // 테스트 라운드 번호 증가 및 Firestore에 저장
-    catData.testRoundNumber = (catData.testRoundNumber || 0) + 1; 
-    updateCatDataInFirestore(); 
+    // 이 함수에서는 testRoundNumber를 증가시키지 않습니다.
+    // testRoundNumber는 해당 라운드가 완전히 완료되었을 때만 증가합니다.
 
     const shuffledWords = [...initialWords].sort(() => 0.5 - Math.random());
     dailyWords = shuffledWords.slice(0, TEST_WORD_COUNT);
+    
+    // dailyWords를 masteredWords에 추가 (중복 방지)
     dailyWords.forEach(word => {
-        if (!sessionWords.some(sWord => sWord.english === word.english)) {
-            sessionWords.push(word);
+        const isAlreadyMastered = catData.masteredWords.some(mw => mw.english === word.english);
+        if (!isAlreadyMastered) {
+            catData.masteredWords.push(word);
         }
     });
+    updateCatDataInFirestore(); // 변경된 masteredWords 저장
 
     if (dailyWords.length > 0) {
         setupQuestion(dailyWords[0]);
@@ -744,29 +750,33 @@ function proceedToNextQuestionOrPhase() {
         currentQuestionIndex = 0; 
         if (appState === 'initial') {
             if (incorrectWordsForReview.length === 0) {
+                // 초기 테스트가 해당 라운드에 대해 완전히 올바르게 완료됨
                 appState = 'round_completed_success'; 
                 resultMessage = `축하합니다! 모든 문제를 맞히고 ${catData.name}의 행복도가 올랐어요!`;
-                console.log("proceedToNextQuestionOrPhase: round_completed_success에 대한 resultMessage 설정:", resultMessage); 
                 updateCatHappiness(true); 
-                console.log("앱 상태: round_completed_success (초기 테스트 모두 정답)"); 
+                // 전체 테스트 라운드(복습 포함) 성공적으로 완료 후에만 testRoundNumber 증가
+                catData.testRoundNumber++; // 다음 테스트를 위해 증가
+                updateCatDataInFirestore(); // 증가된 라운드 번호 저장
+                console.log("앱 상태: round_completed_success (초기 테스트 모두 정답), 다음 테스트 라운드:", catData.testRoundNumber); 
             } else {
                 appState = 'initial_test_completed_with_errors'; 
                 resultMessage = `${incorrectWordsForReview.length}개의 틀린 단어가 있어요. 오답노트 학습을 시작합니다!`;
-                console.log("proceedToNextQuestionOrPhase: initial_test_completed_with_errors (초기)에 대한 resultMessage 설정:", resultMessage); 
                 isFirstReviewPrompt = true; 
                 console.log("앱 상태: initial_test_completed_with_errors (오답노트 시작 알림 전)"); 
             }
         } else if (appState === 'review') {
             if (incorrectWordsForReview.length === 0) {
+                // 복습 단계가 성공적으로 완료됨, 즉 전체 테스트 라운드가 완료됨.
                 appState = 'round_completed_success'; 
                 resultMessage = `대단해요! 모든 단어를 완벽하게 마스터했어요! ${catData.name}의 행복도가 크게 올랐어요!`; 
-                console.log("proceedToNextQuestionOrPhase: 오답노트 성공에 대한 resultMessage 설정:", resultMessage); 
                 updateCatHappiness(true); 
-                console.log("앱 상태: round_completed_success (오답노트 모두 정답)"); 
+                // 전체 테스트 라운드(복습 포함) 성공적으로 완료 후에만 testRoundNumber 증가
+                catData.testRoundNumber++; // 다음 테스트를 위해 증가
+                updateCatDataInFirestore(); // 증가된 라운드 번호 저장
+                console.log("앱 상태: round_completed_success (오답노트 모두 정답), 다음 테스트 라운드:", catData.testRoundNumber); 
             } else {
                 appState = 'initial_test_completed_with_errors'; 
                 resultMessage = `아직 ${incorrectWordsForReview.length}개의 단어가 남아있어요. 계속해서 도전하세요!`;
-                console.log("proceedToNextQuestionOrPhase: 오답노트 계속 (모달)에 대한 resultMessage 설정:", resultMessage); 
                 isFirstReviewPrompt = false; 
                 console.log("앱 상태: initial_test_completed_with_errors (오답노트 계속 알림 전)"); 
             }
