@@ -13,22 +13,6 @@ body {
     100% { transform: rotate(0deg); }
 }
 
-.animate-wag {
-    transform-origin: bottom center;
-    animation: wag 0.5s infinite alternate;
-}
-
-
-.main-app-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.main-app-visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
 
 #level-up-speech-bubble {
     position: absolute;
@@ -53,19 +37,3 @@ body {
     pointer-events: none; 
 }
 
-
-#level-up-speech-bubble:not(.hidden) {
-    opacity: 1;
-    transform: translateY(-50%) translateX(50%) scale(1); 
-}
-
-
-@keyframes pop-in {
-    0% { transform: translateY(-50%) translateX(50%) scale(0.8); opacity: 0; }
-    80% { transform: translateY(-50%) translateX(50%) scale(1.05); opacity: 1; }
-    100% { transform: translateY(-50%) translateX(50%) scale(1); opacity: 1; }
-}
-
-#level-up-speech-bubble:not(.hidden) {
-    animation: pop-in 0.3s forwards;
-}
