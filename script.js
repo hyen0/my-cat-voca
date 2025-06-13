@@ -10,7 +10,6 @@ import {
 import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // initialWords는 이제 words.js에서 전역적으로 제공
-// 실제 나의 Firebase 콘솔의 Firebase 구성
 const firebaseConfig = {
   apiKey: "AIzaSyB4ppRGai7vrfE_gerw55PqGdzQcO7DSQc",
   authDomain: "my-vocat-app.firebaseapp.com",
@@ -26,8 +25,6 @@ let auth;
 let userId = null;
 let userEmail = null; // 사용자 이메일 저장
 let isAuthReady = false; 
-// catData에서 lastTestDate 속성을 제거했습니다.
-// testRoundNumber를 catData에 추가하여 Firestore에 저장 및 로드되도록 합니다.
 let catData = { level: 1, happiness: 50, name: null, testRoundNumber: 0 }; 
 let currentQuestionIndex = 0;
 let dailyWords = []; 
@@ -41,7 +38,6 @@ let initialTestCorrectCount = 0;
 let appState = 'loading'; 
 let resultMessage = ''; 
 let isLoading = true; 
-// canTakeTest는 더 이상 날짜에 의해 제한되지 않습니다.
 let canTakeTest = true; 
 let feedback = null; 
 const TEST_WORD_COUNT = 10;
@@ -242,7 +238,6 @@ function renderTestSection() {
                 if (optionsArea) optionsArea.innerHTML = '';
                 options.forEach((option) => {
                     const button = document.createElement('button');
-                    // 이전 클래스로 되돌림 (고정 높이 및 너비 제거)
                     button.className = "bg-white text-purple-700 font-semibold py-4 px-6 rounded-lg shadow-md hover:bg-purple-100 transition duration-300 ease-in-out transform hover:scale-105 border-2 border-purple-300 text-lg text-left";
                     button.textContent = option;
                     button.onclick = () => handleAnswer(option);
@@ -271,7 +266,6 @@ function renderTestSection() {
         if (statusMessageArea) statusMessageArea.classList.remove('hidden');
         if (statusMessage) statusMessage.textContent = "데이터를 불러오는 중...";
     } else if (appState === 'landing_page' || appState === 'login_register' || appState === 'cat_naming') {
-        // 표지/인증/이름 지정 섹션에서는 테스트 진행 상황을 표시하지 않음
         if (testProgress) testProgress.textContent = ""; 
     }
 }
@@ -382,8 +376,6 @@ function renderModal() {
 function renderApp() {
     console.log("renderApp 호출됨. 현재 appState:", appState, "isLoading:", isLoading); 
 
-    // 모든 주요 섹션을 숨깁니다.
-    // 이 부분은 각 조건문에서 필요한 섹션만 다시 표시하기 전에 항상 실행됩니다.
     if (initialLoadingSpinner) initialLoadingSpinner.classList.add('hidden');
     if (landingPageSection) landingPageSection.classList.add('hidden');
     if (authSection) authSection.classList.add('hidden');
